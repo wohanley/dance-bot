@@ -20,6 +20,18 @@ package object body {
   case class BodyPartRule(display: String, exclude: Traversable[BodyPartSlot])
 
 
-  def addBodyPart(parts: Map[BodyPartSlot, String],
-    partsToAdd: Set[BodyPartSlot]) = {}
+  /** This method might possibly return a map that's been changed from param
+    * parts in more ways than by just adding a kv-pair, depending on the
+    * contents of the body part rule. */
+  def addBodyPart(parts: Map[BodyPartSlot, String], add: BodyPartRule) = {
+    parts
+  }
+
+  def addBodyParts(parts: Map[BodyPartSlot, String],
+    partsToAdd: List[BodyPartRule]): Map[BodyPartSlot, String] =
+    partsToAdd match {
+      case Nil => parts
+      case partToAdd :: restPartsToAdd =>
+        addBodyParts(addBodyPart(parts, partToAdd), restPartsToAdd)
+    }
 }
