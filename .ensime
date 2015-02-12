@@ -1,0 +1,24 @@
+(
+ :root-dir "/home/wohanley/software/dance-suggestions"
+ :cache-dir "/home/wohanley/software/dance-suggestions/.ensime_cache"
+ :name "dance-suggestions"
+ :java-home "/lib/jvm/default"
+ :java-flags ("-Xms512M" "-Xmx1536M" "-Xss1M" "-XX:+CMSClassUnloadingEnabled" "-XX:MaxPermSize=256M")
+ :reference-source-roots nil
+ :scala-version "2.11.5"
+ :compiler-args nil
+ 
+ :subprojects ((
+   :name "dance-suggestions"
+   :module-name "dance-suggestions"
+   :source-roots ("/home/wohanley/software/dance-suggestions/src/main/scala" "/home/wohanley/software/dance-suggestions/src/main/java" "/home/wohanley/software/dance-suggestions/src/test/scala" "/home/wohanley/software/dance-suggestions/src/test/java")
+   :target "/home/wohanley/software/dance-suggestions/target/scala-2.11/classes"
+   :test-targets ("/home/wohanley/software/dance-suggestions/target/scala-2.11/test-classes")
+   :depends-on-modules nil
+   :compile-deps ("/home/wohanley/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.5.jar")
+   :runtime-deps nil
+   :test-deps nil
+   :doc-jars ("/home/wohanley/.ivy2/cache/org.scala-lang/scala-library/docs/scala-library-2.11.5-javadoc.jar")
+   :reference-source-roots ("/home/wohanley/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.5-sources.jar")))
+ 
+)
