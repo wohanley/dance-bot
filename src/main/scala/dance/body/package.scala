@@ -13,11 +13,16 @@ package object body {
   case object RightLeg extends BodyPartSlot
 
 
+  /** When a part is actually added to a body, it's in the form of a string that
+    * belongs in a particular slot. */
+  case class BodyPart(slot: BodyPartSlot, display: String)
+
+
   /** When we add a part to the body, we might also need to do something more.
     *
     * @param exclude specifies some body part slots that this part can't coexist
     * with */
-  case class BodyPartRule(display: String, exclude: Traversable[BodyPartSlot])
+  case class BodyPartRule(part: BodyPart, exclude: Traversable[BodyPartSlot])
 
 
   /** This method might possibly return a map that's been changed from param
@@ -27,6 +32,7 @@ package object body {
     parts
   }
 
+  /** Add the parts listed in partsToAdd to the map parts. */
   def addBodyParts(parts: Map[BodyPartSlot, String],
     partsToAdd: List[BodyPartRule]): Map[BodyPartSlot, String] =
     partsToAdd match {
