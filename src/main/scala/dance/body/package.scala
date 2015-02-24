@@ -32,7 +32,9 @@ package object body {
     * parts in more ways than by just adding a kv-pair, depending on the
     * contents of the body part rule. */
   def addBodyPart(body: Body, add: BodyPartRule) = {
-    body
+    // we need to remove all the parts that this rule needs excluded, then add
+    // the part it needs added
+    (body -- add.exclude) + (add.part.slot -> add.part.display)
   }
 
   /** Add the parts listed in partsToAdd to the map parts. */
