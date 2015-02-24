@@ -18,6 +18,9 @@ package object body {
   case class BodyPart(slot: BodyPartSlot, display: String)
 
 
+  type Body = Map[BodyPartSlot, String]
+
+
   /** When we add a part to the body, we might also need to do something more.
     *
     * @param exclude specifies some body part slots that this part can't coexist
@@ -28,16 +31,15 @@ package object body {
   /** This method might possibly return a map that's been changed from param
     * parts in more ways than by just adding a kv-pair, depending on the
     * contents of the body part rule. */
-  def addBodyPart(parts: Map[BodyPartSlot, String], add: BodyPartRule) = {
-    parts
+  def addBodyPart(body: Body, add: BodyPartRule) = {
+    body
   }
 
   /** Add the parts listed in partsToAdd to the map parts. */
-  def addBodyParts(parts: Map[BodyPartSlot, String],
-    partsToAdd: List[BodyPartRule]): Map[BodyPartSlot, String] =
+  def addBodyParts(body: Body, partsToAdd: List[BodyPartRule]): Body =
     partsToAdd match {
-      case Nil => parts
+      case Nil => body
       case partToAdd :: restPartsToAdd =>
-        addBodyParts(addBodyPart(parts, partToAdd), restPartsToAdd)
+        addBodyParts(addBodyPart(body, partToAdd), restPartsToAdd)
     }
 }
