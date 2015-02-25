@@ -10,10 +10,14 @@ package object draw {
   type DrawableBody = List[List[DrawableBodyPart]]
 
 
-  def draw(body: DrawableBody): String = {
-    body.map(row => row.foldLeft("") { (str, part) =>
-      str.padTo(part.offset, " ") + part.draw
-    }).mkString("\n")
+  def draw(body: Body): String = draw(drawablify(body))
+
+  private def draw(body: DrawableBody): String = {
+    body.map(row =>
+      row.foldLeft("") { (str, part) =>
+        str.padTo(part.offset, " ").mkString + part.draw
+      }
+    ).mkString("\n")
   }
 
   private def drawablify(body: Body): DrawableBody = {
@@ -28,6 +32,7 @@ package object draw {
 
     val leftOfCenter = centerOffset + (if (centerLength % 2 == 0) 0 else -1)
     val rightOfCenter = leftOfCenter + centerLength + (if (centerLength % 2 == 0) -1 else 0)
+    val legPositions = legOffsets.getOrElse(centerLength, (0, 0))
 
     List(
       List(
@@ -41,9 +46,9 @@ package object draw {
         getDrawableForArea(body, East, rightOfCenter)
       ),
       List(
-        getDrawableForArea(body, Southwest, leftOfCenter - getDisplayForArea(body, Southwest).length),
+        getDrawableForArea(body, Southwest, centerOffset + legPositions._1),
         getDrawableForArea(body, South, centerOffset),
-        getDrawableForArea(body, Southeast, rightOfCenter)
+        getDrawableForArea(body, Southeast, centerOffset + legPositions._2)
       )
     )
   }
@@ -56,4 +61,12 @@ package object draw {
   private def getDrawableForArea(body: Body, area: BodyPartDisplayArea,
     offset: Int): DrawableBodyPart =
     DrawableBodyPart(getDisplayForArea(body, area), offset)
+
+  /** Leg offsets vary depending on the width of the body. */
+  private val legOffsets = Map(
+    0 -> (0, 0),
+    1 -> (-1, 1),
+    2 -> (0, 1),
+    3 -> (0, 2)
+  )
 }

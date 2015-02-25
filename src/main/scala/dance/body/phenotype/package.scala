@@ -1,19 +1,31 @@
+package body
+
 package object phenotype {
 
   import body._
   import body.Parts.parts
   import scala.collection.immutable.HashMap
+  import scala.util.Random
 
 
   def typical(): Body = {
     addBodyParts(
       new HashMap[BodyPartSlot, BodyPart],
       List(
-        BodyAddition(Head, parts.get(Head)
-          .flatMap(head => head.headOption)
-          .getOrElse(BodyPart(North, "o", Nil))),
-        BodyAddition(Torso, BodyPart(Central, "U", Nil))
+        randomPart(Head, BodyPart(North, "o", Nil)),
+        randomPart(Torso, BodyPart(Central, "U", Nil)),
+        randomPart(LeftArm, BodyPart(West, "/", Nil)),
+        randomPart(RightArm, BodyPart(East, "\\", Nil)),
+        randomPart(LeftLeg, BodyPart(Southwest, "/", Nil)),
+        randomPart(RightLeg, BodyPart(Southeast, "\\", Nil))
       )
     )
   }
+
+  private def randomPart(slot: BodyPartSlot, default: BodyPart): BodyAddition =
+    BodyAddition(slot, parts.get(slot)
+      .flatMap(slotOptions => {
+        Random.shuffle(slotOptions.toList).headOption
+      })
+      .getOrElse(default))
 }
