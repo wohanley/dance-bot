@@ -1,8 +1,8 @@
-package body
+package dance.body
 
 package object draw {
 
-  import body._
+  import dance.body._
 
 
   case class DrawableBodyPart(draw: String, offset: Int)
@@ -32,7 +32,7 @@ package object draw {
 
     val leftOfCenter = centerOffset + (if (centerLength % 2 == 0) 0 else -1)
     val rightOfCenter = leftOfCenter + centerLength + (if (centerLength % 2 == 0) -1 else 0)
-    val legPositions = legOffsets.getOrElse(centerLength, (0, 0))
+    val legPositions = legOffsets.getOrElse(centerLength, LegOffset(0, 0, 0))
 
     List(
       List(
@@ -46,9 +46,9 @@ package object draw {
         getDrawableForArea(body, East, rightOfCenter)
       ),
       List(
-        getDrawableForArea(body, Southwest, centerOffset + legPositions._1),
-        getDrawableForArea(body, South, centerOffset),
-        getDrawableForArea(body, Southeast, centerOffset + legPositions._2)
+        getDrawableForArea(body, Southwest, centerOffset + legPositions.left),
+        getDrawableForArea(body, South, centerOffset + legPositions.combined),
+        getDrawableForArea(body, Southeast, centerOffset + legPositions.right)
       )
     )
   }
@@ -62,11 +62,13 @@ package object draw {
     offset: Int): DrawableBodyPart =
     DrawableBodyPart(getDisplayForArea(body, area), offset)
 
+  case class LegOffset(left: Int, combined: Int, right: Int)
+
   /** Leg offsets vary depending on the width of the body. */
-  private val legOffsets = Map(
-    0 -> (0, 0),
-    1 -> (-1, 1),
-    2 -> (0, 1),
-    3 -> (0, 2)
+  private val legOffsets = Map[Int, LegOffset](
+    0 -> LegOffset(0, 0, 0),
+    1 -> LegOffset(-1, 0, 1),
+    2 -> LegOffset(0, 0, 1),
+    3 -> LegOffset(0, 1, 2)
   )
 }

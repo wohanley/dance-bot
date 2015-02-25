@@ -1,4 +1,9 @@
+package dance
+
 package object body {
+
+  import scala.util.Try
+
 
   /** A body has a certain set of slots to be occupied by body parts. Note that
     * a single body doesn't need all these slots (and in fact, can't have them
@@ -41,19 +46,9 @@ package object body {
   /** This method might possibly return a map that's been changed from param
     * parts in more ways than by just adding a kv-pair, depending on the
     * contents of the body part rule. */
-  def addBodyPart(body: Body, add: BodyAddition) = {
-    // we need to remove all the slots that this rule needs excluded, then add
-    // the part it needs added
-    (body -- add.part.exclude) + (add.slot -> add.part)
+  def addBodyPart(body: Body, add: BodyAddition): Body = {
+      // we need to remove all the slots that this rule needs excluded, then add
+      // the part it needs added
+      (body -- add.part.exclude) + (add.slot -> add.part)
   }
-
-  /** Add the parts listed in partsToAdd to the map parts. The order of
-    * partsToAdd is important! A body part can be re-added after it's been
-    * excluded. */
-  def addBodyParts(body: Body, partsToAdd: List[BodyAddition]): Body =
-    partsToAdd match {
-      case Nil => body
-      case partToAdd :: restPartsToAdd =>
-        addBodyParts(addBodyPart(body, partToAdd), restPartsToAdd)
-    }
 }
