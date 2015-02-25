@@ -12,33 +12,43 @@ package object body {
   case object LeftLeg extends BodyPartSlot
   case object RightLeg extends BodyPartSlot
 
+  /** A body part is displayed in a certain place. */
+  sealed trait BodyPartDisplayArea
+  case object Central extends BodyPartDisplayArea
+  case object North extends BodyPartDisplayArea
+  case object Northeast extends BodyPartDisplayArea
+  case object East extends BodyPartDisplayArea
+  case object Southeast extends BodyPartDisplayArea
+  case object South extends BodyPartDisplayArea
+  case object Southwest extends BodyPartDisplayArea
+  case object West extends BodyPartDisplayArea
+  case object Northwest extends BodyPartDisplayArea
 
-  /** When a part is actually added to a body, it's in the form of a string that
-    * belongs in a particular slot. */
-  case class BodyPart(slot: BodyPartSlot, display: String)
 
+  case class BodyPartDisplay(area: BodyPartDisplayArea, string: String)
 
-  type Body = Map[BodyPartSlot, String]
+  /** @param exclude specifies some body part slots that this part can't coexist    * with */
+  case class BodyPart(
+    area: BodyPartDisplayArea,
+    display: String,
+    exclude: Traversable[BodyPartSlot]
+  )
 
+  type Body = Map[BodyPartSlot, BodyPart]
 
-  /** When we add a part to the body, we might also need to do something more.
-    *
-    * @param exclude specifies some body part slots that this part can't coexist
-    * with */
-  case class BodyPartRule(part: BodyPart, exclude: Traversable[BodyPartSlot])
-
+  case class BodyAddition(slot: BodyPartSlot, part: BodyPart)
 
   /** This method might possibly return a map that's been changed from param
     * parts in more ways than by just adding a kv-pair, depending on the
     * contents of the body part rule. */
-  def addBodyPart(body: Body, add: BodyPartRule) = {
-    // we need to remove all the parts that this rule needs excluded, then add
+  def addBodyPart(body: Body, add: BodyAddition) = {
+    // we need to remove all the slots that this rule needs excluded, then add
     // the part it needs added
-    (body -- add.exclude) + (add.part.slot -> add.part.display)
+    (body -- add.part.exclude) + (add.slot -> add.part)
   }
 
   /** Add the parts listed in partsToAdd to the map parts. */
-  def addBodyParts(body: Body, partsToAdd: List[BodyPartRule]): Body =
+  def addBodyParts(body: Body, partsToAdd: List[BodyAddition]): Body =
     partsToAdd match {
       case Nil => body
       case partToAdd :: restPartsToAdd =>
