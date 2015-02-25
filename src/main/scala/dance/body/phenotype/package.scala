@@ -13,11 +13,11 @@ package object phenotype {
       new HashMap[BodyPartSlot, BodyPart],
       List(
         randomPart(Head, BodyPart(North, "o", Nil)),
-        randomPart(Torso, BodyPart(Central, "U", Nil)),
+        randomPart(LeftLeg, BodyPart(Southwest, "/", Nil)),
+        randomPart(RightLeg, BodyPart(Southeast, "\\", Nil)),
         randomPart(LeftArm, BodyPart(West, "/", Nil)),
         randomPart(RightArm, BodyPart(East, "\\", Nil)),
-        randomPart(LeftLeg, BodyPart(Southwest, "/", Nil)),
-        randomPart(RightLeg, BodyPart(Southeast, "\\", Nil))
+        randomPart(Torso, BodyPart(Central, "U", Nil))
       )
     )
   }

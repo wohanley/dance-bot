@@ -47,7 +47,9 @@ package object body {
     (body -- add.part.exclude) + (add.slot -> add.part)
   }
 
-  /** Add the parts listed in partsToAdd to the map parts. */
+  /** Add the parts listed in partsToAdd to the map parts. The order of
+    * partsToAdd is important! A body part can be re-added after it's been
+    * excluded. */
   def addBodyParts(body: Body, partsToAdd: List[BodyAddition]): Body =
     partsToAdd match {
       case Nil => body
