@@ -14,7 +14,7 @@ object Worker {
 
   private def tweetRegularly() = {
     while (true) {
-      web.tweet(danceMove.getOrElse("*falls down*"))
+      web.tweet("‌" + danceMove.getOrElse("*falls down*"))
       Thread.sleep(60 * 1000)
     }
   }
