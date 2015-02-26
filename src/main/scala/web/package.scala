@@ -9,9 +9,9 @@ package object web {
   def tweet(text: String) {
 
     val twitterConfig = new twitter4j.conf.ConfigurationBuilder()
-      .setOAuthConsumerKey("rZL1YxeYrA9doVtp0wGO5ZK8W")
+      .setOAuthConsumerKey("V54807FqVPWzFQECzPZlRQxWe")
       .setOAuthConsumerSecret(Properties.envOrElse("API_SECRET", ""))
-      .setOAuthAccessToken("3015960198-jnI4BYRm0UPoYeMGtwM7Jjtu20cvn7rRXcxIylP")
+      .setOAuthAccessToken("3063695836-rwFK1ODfW5OOZlwSoHd6hs6XgAY4ijzbFJ74Fc4")
       .setOAuthAccessTokenSecret(Properties.envOrElse("ACCESS_TOKEN_SECRET", ""))
       .build()
 
